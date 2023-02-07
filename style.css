@@ -43,7 +43,7 @@ input[id="acceptTerms"] {
     margin-left: 0px;
     width: 20px;
 }
-input[type="submit"] {
+button {
     margin-left: 0px;
     padding: 15px;
     border-radius: 10px;
