@@ -1,0 +1,78 @@
+body {
+    background-color: rgb(235, 238, 240);
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.regForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* gap: 20px; */
+}
+
+
+.regForm, .Entries {
+    background-color: rgb(254, 254, 254);
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+input {
+    margin-left: 90px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    width: 200px;
+}
+
+input[id="dob"] {
+    margin-left: 32px;
+}
+
+input[id="password"] {
+    margin-left: 61px;
+}
+
+input[id="acceptTerms"] {
+    margin-left: 0px;
+    width: 20px;
+}
+input[type="submit"] {
+    margin-left: 0px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: green;
+    color: white;
+    width: 100px;
+}
+input[type="submit"]:hover {
+    opacity: 0.8;
+  }
+.storageHeader {
+    text-align: center;
+}
+
+tr {
+  padding-top: 20px;  
+}
+
+th {
+    margin-left: 50px;
+}
+td {
+    margin-left: 20px;
+}
+
+input#name:invalid {
+    border: 0.5px solid red;
+}
+
+input#email:invalid {
+    border: 0.5px solid red;
+}
