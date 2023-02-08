@@ -89,21 +89,9 @@ function saveToLocalStorage() {
     let userEntry = retrieveEntries();
 
     const anEntry = {nameValue, emailValue, passwordValue, dobValue, acceptedValue};
-    let flag=true;
-    for (entry in userEntry) {
-        if (userEntry[entry].nameValue == nameValue) {
-            flag = false;
-            console.log("HI")
-            break;
-        }
-        console.log(flag)
-        console.log("Local Storage: ", userEntry[entry].nameValue)
-        console.log("Entrytobe: ", nameValue)
-    }
-    if (!flag) {
-        userEntry.push(anEntry);
-        localStorage.setItem('user-entries', JSON.stringify(userEntry));
-    }
+
+    userEntry.push(anEntry);
+    localStorage.setItem('user-entries', JSON.stringify(userEntry));
 }
 
 function validatedob(dob) {
