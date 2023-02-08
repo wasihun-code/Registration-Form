@@ -59,14 +59,16 @@ input[type="submit"]:hover {
 }
 
 tr {
-  padding-top: 20px;  
+    padding: 20px;  
 }
 
 th {
     margin-left: 50px;
+    padding: 10px;
 }
 td {
     margin-left: 20px;
+    padding: 10px;
 }
 
 input#name:invalid {

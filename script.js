@@ -14,81 +14,62 @@ const retrieveEntries = () => {
 }
 
 
-function loadfromLocalStorageToTable() {
-    let allEntries = retrieveEntries();
-    
-    for (entry of allEntries) {
-        let tr = document.createElement('tr');
-        let tableRow = 
-        `<tr>
-        <td>${entry.nameValue}</td>
-        <td>${entry.emailValue}</td>
-        <td>${entry.passwordValue}</td>
-        <td>${entry.dobValue}</td>
-        <td>${entry.acceptedValue}</td>
-        </tr>
-        `
-        tr.innerHTML = tableRow;
-        table.appendChild(tr);
-    }
-}
-function loadanEntryandUpdateTable(entry) {
-    let tr = document.createElement('tr');
-    let tableRow = 
-    `<tr>
-    <td>${entry.nameValue}</td>
-    <td>${entry.emailValue}</td>
-    <td>${entry.passwordValue}</td>
-    <td>${entry.dobValue}</td>
-    <td>${entry.acceptedValue}</td>
-    </tr>
-    `
-    tr.innerHTML = tableRow;
-    table.appendChild(tr);
-}
 
-window.onload = loadfromLocalStorageToTable();
+window.onload = loadfromLocalStorageToTableOnLoad();
 email.addEventListener('input', () => validateEmail(email));
 submitBtn.addEventListener('click', (event) => {
     const name = document.getElementById('name');
     const password = document.getElementById('password');
     const dob = document.getElementById('dob');
     const acceptedTerms = document.getElementById('acceptTerms')
-    let entry = {'nameValue': name.value, 'emailValue': email.value,
-                 'passwordValue': password.value, 'dobValue': dob.value,
-                 'acceptedValue': acceptedTerms.value
+
+    let entry = {'name': name.value, 'email': email.value,
+                 'password': password.value, 'dob': dob.value,
+                 'accepted': acceptedTerms.checked
     };
+
     validateEmail(email);
+
     if (name.checkValidity() && email.checkValidity() 
     && password.checkValidity() && validatedob(dob)
     && acceptedTerms.checkValidity()){
         event.preventDefault();
         saveToLocalStorage();
-        loadanEntryandUpdateTable(entry);
+        addEntryToTable(entry);
     }
 })
 
 
-function validateEmail(email) {
-    if(email.validity.typeMismatch){
-        email.setCustomValidity("The Email is not in the expected format");
-        email.reportValidity();
-    }
-    else {
-        email.setCustomValidity('');
-    }
+
+function loadfromLocalStorageToTableOnLoad() {
+    let allEntries = retrieveEntries();
+    allEntries.map(addEntryToTable)
+}
+
+function addEntryToTable(entry) {
+    let tr = document.createElement('tr');
+    let tableRow = `<tr>
+        <td>${entry.name}</td>
+        <td>${entry.email}</td>
+        <td>${entry.password}</td>
+        <td>${entry.dob}</td>
+        <td>${entry.accepted}</td>
+    </tr>`
+    tr.innerHTML = tableRow;
+    table.appendChild(tr);
 }
 
 function saveToLocalStorage() {
-    const nameValue = document.getElementById('name').value;
-    const emailValue = document.getElementById('email').value;
-    const passwordValue = document.getElementById('password').value;
-    const dobValue = document.getElementById('dob').value;
-    let acceptedValue = document.getElementById('acceptTerms').checked;
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const dob = document.getElementById('dob').value;
+    let accepted = document.getElementById('acceptTerms').checked;
 
     let userEntry = retrieveEntries();
+    // let userEntry = [];
 
-    const anEntry = {nameValue, emailValue, passwordValue, dobValue, acceptedValue};
+    const anEntry = {name, email, password, dob, accepted};
 
     userEntry.push(anEntry);
     localStorage.setItem('user-entries', JSON.stringify(userEntry));
@@ -106,6 +87,16 @@ function validatedob(dob) {
         return false;
     }
     return true;
+}
+
+function validateEmail(email) {
+    if(email.validity.typeMismatch){
+        email.setCustomValidity("The Email is not in the expected format");
+        email.reportValidity();
+    }
+    else {
+        email.setCustomValidity('');
+    }
 }
 
 function calculate_age(dob) { 
