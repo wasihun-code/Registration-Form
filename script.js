@@ -2,6 +2,40 @@
 const submitBtn = document.getElementById('submit');
 const email = document.getElementById('email');
 const dob = document.getElementById('dob')
+const table = document.getElementsByTagName('table')[0];
+
+const retrieveEntries = () => {
+    let entreis = localStorage.getItem('user-entries')
+    if (entreis) {
+        entreis = JSON.parse(entreis);
+        return entreis;
+    }
+    return [];
+}
+
+loadfromLocalStorageToTable()
+
+function loadfromLocalStorageToTable() {
+    let allEntries = retrieveEntries();
+    console.log(allEntries)
+    
+    for (entry of allEntries) {
+        let tr = document.createElement('tr');
+        let tableRow = 
+        `<tr>
+        <td>${entry.nameValue}</td>
+        <td>${entry.emailValue}</td>
+        <td>${entry.passwordValue}</td>
+        <td>${entry.dobValue}</td>
+        <td>${entry.acceptedValue}</td>
+        </tr>
+        `
+        // console.log(tableRow)
+        tr.innerHTML = tableRow;
+        console.log(table.textContent)
+        table.appendChild(tr);
+    }
+}
 
 email.addEventListener('input', () => validateEmail(email));
 submitBtn.addEventListener('click', (event) => {
@@ -16,7 +50,7 @@ submitBtn.addEventListener('click', (event) => {
         event.preventDefault();
         console.log("HI")
         saveToLocalStorage();
-        appendLocalStorageToTable();
+        loadfromLocalStorageToTable();
     }
 })
 
@@ -38,34 +72,11 @@ function saveToLocalStorage() {
     const dobValue = document.getElementById('dob').value;
     let acceptedValue = document.getElementById('acceptTerms').checked;
 
-        localStorage.setItem('name', nameValue);
-        localStorage.setItem('email', emailValue);
-        localStorage.setItem('password', passwordValue);
-        localStorage.setItem('dob', dobValue);
-        localStorage.setItem('acceptedTerms', acceptedValue)
-}
+    let userEntry = retrieveEntries();
 
-function appendLocalStorageToTable() {
-    const nameValue = localStorage.getItem('name');
-    const emailValue = localStorage.getItem('email');
-    const passwordValue = localStorage.getItem('password');
-    const dobValue = localStorage.getItem('dob');
-    const acceptedValue = localStorage.getItem('acceptedTerms');
-
-
-    let tableRow = 
-    `<tr>
-       <td>${nameValue}</td>
-       <td>${emailValue}</td>
-       <td>${passwordValue}</td>
-       <td>${dobValue}</td>
-       <td>${acceptedValue}</td>
-     </tr>`;
-
-    const table = document.getElementsByTagName('table')[0];
-    let tr = document.createElement('tr');
-    tr.innerHTML = tableRow;
-    table.appendChild(tr)
+    const anEntry = {nameValue, emailValue, passwordValue, dobValue, acceptedValue};
+    userEntry.push(anEntry);
+    localStorage.setItem('user-entries', JSON.stringify(userEntry));
 }
 
 function validatedob(dob) {
@@ -74,7 +85,6 @@ function validatedob(dob) {
         return false;
     }
     let age = calculate_age(new Date(dob.value))    
-    console.log(age)
     if (age < 18 || age > 55) {
         dob.setCustomValidity('Age should be between 18 and 55');
         dob.reportValidity();
