@@ -13,11 +13,9 @@ const retrieveEntries = () => {
     return [];
 }
 
-loadfromLocalStorageToTable()
 
 function loadfromLocalStorageToTable() {
     let allEntries = retrieveEntries();
-    console.log(allEntries)
     
     for (entry of allEntries) {
         let tr = document.createElement('tr');
@@ -30,27 +28,43 @@ function loadfromLocalStorageToTable() {
         <td>${entry.acceptedValue}</td>
         </tr>
         `
-        // console.log(tableRow)
         tr.innerHTML = tableRow;
-        console.log(table.textContent)
         table.appendChild(tr);
     }
 }
+function loadanEntryandUpdateTable(entry) {
+    let tr = document.createElement('tr');
+    let tableRow = 
+    `<tr>
+    <td>${entry.nameValue}</td>
+    <td>${entry.emailValue}</td>
+    <td>${entry.passwordValue}</td>
+    <td>${entry.dobValue}</td>
+    <td>${entry.acceptedValue}</td>
+    </tr>
+    `
+    tr.innerHTML = tableRow;
+    table.appendChild(tr);
+}
 
+window.onload = loadfromLocalStorageToTable();
 email.addEventListener('input', () => validateEmail(email));
 submitBtn.addEventListener('click', (event) => {
     const name = document.getElementById('name');
     const password = document.getElementById('password');
     const dob = document.getElementById('dob');
     const acceptedTerms = document.getElementById('acceptTerms')
+    let entry = {'nameValue': name.value, 'emailValue': email.value,
+                 'passwordValue': password.value, 'dobValue': dob.value,
+                 'acceptedValue': acceptedTerms.value
+    };
     validateEmail(email);
     if (name.checkValidity() && email.checkValidity() 
-        && password.checkValidity() && validatedob(dob)
-        && acceptedTerms.checkValidity()){
+    && password.checkValidity() && validatedob(dob)
+    && acceptedTerms.checkValidity()){
         event.preventDefault();
-        console.log("HI")
         saveToLocalStorage();
-        loadfromLocalStorageToTable();
+        loadanEntryandUpdateTable(entry);
     }
 })
 
@@ -75,8 +89,21 @@ function saveToLocalStorage() {
     let userEntry = retrieveEntries();
 
     const anEntry = {nameValue, emailValue, passwordValue, dobValue, acceptedValue};
-    userEntry.push(anEntry);
-    localStorage.setItem('user-entries', JSON.stringify(userEntry));
+    let flag=true;
+    for (entry in userEntry) {
+        if (userEntry[entry].nameValue == nameValue) {
+            flag = false;
+            console.log("HI")
+            break;
+        }
+        console.log(flag)
+        console.log("Local Storage: ", userEntry[entry].nameValue)
+        console.log("Entrytobe: ", nameValue)
+    }
+    if (!flag) {
+        userEntry.push(anEntry);
+        localStorage.setItem('user-entries', JSON.stringify(userEntry));
+    }
 }
 
 function validatedob(dob) {
